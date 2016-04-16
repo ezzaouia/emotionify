@@ -9,6 +9,8 @@ HOST = '0.0.0.0'
 
 # tmp folder to store uploaded images in
 UPLOAD_FOLDER = './tmp'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
 
 # caffe model
 MODEL_FILE = './api/resources/deploy.prototxt'

@@ -1,5 +1,9 @@
 import cv2
 import numpy as np
+import os
+import logging
+from app_conf import UPLOAD_FOLDER
+
 
 class FaceDetector(object):
     """
@@ -30,8 +34,29 @@ class FaceDetector(object):
         max_size = (int(min_dim * self.max_size_scalar),
                     int(min_dim * self.max_size_scalar))
 
-        faces = self.detector.detectMultiScale(image_gray, self.scale_factor, self.min_neighbors, 0, min_size, max_size)
-        return faces
+        faces = self.detector.detectMultiScale(image_gray, self.scale_factor, self.min_neighbors) #   0, min_size, max_size
+        return faces, image
 
     def detect_face(self, filename):
         return self.detect_faces(filename)[0]
+
+    def save_faces(self, filename):
+        result = []
+
+        faces, image = self.detect_faces(filename)
+
+        for (x, y, w, h) in faces:
+            roi_color = image[y:y+h, x:x+w]
+            roi_color = cv2.resize(roi_color, (128, 128))
+            face_filename = os.path.join(UPLOAD_FOLDER, '.'.join(os.path.split(filename)[1].split('.')[:-1]) +
+                                         '_face.' + os.path.split(filename)[1].split('.')[-1])
+
+            # saving face image
+            cv2.imwrite(face_filename, roi_color)
+            logging.debug('Saving face %s' % face_filename)
+            face = (x, y, w, h, face_filename)
+            result.append(face)
+        return result
+
+    def get_faces(self, filename):
+        return self.save_faces(filename)

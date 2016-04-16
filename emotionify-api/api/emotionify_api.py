@@ -1,4 +1,6 @@
 import numpy as np
+import sys
+
 import caffe
 
 caffe.set_mode_cpu()
