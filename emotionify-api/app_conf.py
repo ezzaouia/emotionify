@@ -1,9 +1,11 @@
 """
- Define all constants and conf var for the app
+ Define all constants and config for the app
 """
 
-# constants
-# ----------------
+# app config
+DEBUG = True
+PORT = 5000
+HOST = '0.0.0.0'
 
 # tmp folder to store uploaded images in
 UPLOAD_FOLDER = './tmp'

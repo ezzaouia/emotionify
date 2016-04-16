@@ -8,6 +8,7 @@ from werkzeug import utils
 import os
 
 # local imports
+from app_conf import *
 from api.emotionify_api import EmotionifyApi
 
 # constants
@@ -33,18 +34,19 @@ def sanity_check():
 def emotionify_upload_face():
     try:
         t0 = time()
-        # catch & save uploaded file
+        # get & save uploaded image
         filename = save_uploaded_file()
 
         output_prob = emotionifyApi.predict(filename)
 
-        jsonify_scores = jsonify_prediected_prob(output_prob)
+        jsonify_scores = jsonify_predected_prob(output_prob)
 
         return jsonify({'argmax_emotion': EMOTION_LABELS.get(output_prob.argmax()), 'scores': jsonify_scores, 'time': time() - t0})
 
     except Exception as err:
         logging.error('\n\nError uploading/emotionifying image. \t code_error: [%s]\n', err)
         return jsonify({'error': str(err)})
+
 
 @app.route('/emotionify_upload', methods=['POST'])
 def emotionify_upload():
@@ -63,7 +65,8 @@ def save_uploaded_file():
     logging.debug('saving file %s' % filename)
     return filename
 
-def jsonify_prediected_prob(output_prob):
+
+def jsonify_predected_prob(output_prob):
     _dict = dict((str(EMOTION_LABELS.get(a)), str(b)) for a, b in zip(range(len(output_prob)), output_prob))
     logging.debug(_dict)
     return _dict
@@ -71,4 +74,4 @@ def jsonify_prediected_prob(output_prob):
 # fire up the application
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host=HOST, port=PORT, debug=DEBUG)
