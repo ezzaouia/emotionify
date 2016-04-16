@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
+from flask.ext.cors import CORS
 import logging
-import cv2
-import numpy as np
 from time import time
 from datetime import datetime
 from werkzeug import utils
@@ -25,6 +24,7 @@ emotionifyApi = EmotionifyApi(MODEL_FILE, PRE_TRAINED_FILE, MEAN_FILE)
 face_detector = FaceDetector()
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 
@@ -74,7 +74,7 @@ def emotionify_upload():
 
             scores = jsonify_predected_prob(output_prob)
 
-            scores = {"face_rectangle": {"left": str(x), "top": str(y), "width": str(w), "height": str(h)},
+            scores = {"face_rectangle": {"left": str(y), "top": str(x), "width": str(w), "height": str(h)},
                       'argmax_emotion': EMOTION_LABELS.get(output_prob.argmax()), 'scores': scores}
 
             result.append(scores)
