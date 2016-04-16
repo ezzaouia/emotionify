@@ -1,8 +1,8 @@
 version: '2'
 services:
-  restful:
+  backend:
     build: .
     ports:
     - '5000:5000'
     volumes:
-    - .:/emotinify-api
+    - .:/emotionify-api
