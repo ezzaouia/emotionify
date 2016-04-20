@@ -1,6 +1,11 @@
 werkzeug
 flask
 flask-cors
+flask-socketio
+eventlet
+gevent-socketio
+gevent-websocket
+greenlet
 tornado
 Cython>=0.19.2
 numpy>=1.7.1
@@ -20,3 +25,6 @@ pyyaml>=3.10
 Pillow>=2.3.0
 six>=1.1.0
 pydevd
+notebook
+requests
+seaborn
