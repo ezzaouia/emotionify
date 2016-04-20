@@ -5,6 +5,7 @@ from time import time
 from datetime import datetime
 from werkzeug import utils
 import os
+from flask_socketio import SocketIO
 
 
 # local imports
@@ -27,6 +28,7 @@ app = Flask(__name__)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
+socketio = SocketIO(app)
 
 
 @app.route('/', methods=['GET'])
@@ -114,4 +116,4 @@ def allowed_file(filename):
 # fireup the app
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
-    app.run(host=HOST, port=PORT, debug=DEBUG)
+    socketio.run(app, host=HOST, port=PORT, debug=DEBUG)
