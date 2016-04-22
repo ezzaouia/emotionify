@@ -61,7 +61,6 @@ export class EmotionifyWebRTCController {
             }
         }
 
-
         // data
         this.aData = [{values: [], key: 'anger'}, {values: [], key: 'disgust'}, {values: [], key: 'fear'},
             {values: [], key: 'happiness'}, {values: [], key: 'sadness'}, {values: [], key: 'surprise'}, {
