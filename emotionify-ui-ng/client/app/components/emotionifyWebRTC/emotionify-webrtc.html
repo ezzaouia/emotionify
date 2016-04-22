@@ -1,0 +1,17 @@
+<h2>Recognize Emotions from WebRTC Stream</h2>
+
+<div ng-controller="EmotionifyWebRTCController as emotionifyWebRTC">
+
+    <md-button class="md-raised md-primary" ng-click="emotionifyWebRTC.goStream()">{{emotionifyWebRTC.sGoStream}}
+    </md-button>
+
+    <div ng-show="emotionifyWebRTC.bIsGoStream">
+        <video width="320" height="240" autoplay></video>
+        <canvas width="320" height="240"></canvas>
+    </div>
+
+    <md-button class="md-raised" ng-click="rrun=!rrun">Start / Stop</md-button>
+
+    <nvd3 options="emotionifyWebRTC.options" data="emotionifyWebRTC.aData"></nvd3>
+
+</div>

@@ -1,0 +1,22 @@
+<h2>Recognize Emotions in Images</h2>
+
+<div ng-controller="EmotionifyImageController as emotionifyImg">
+
+    <div layout="row" flex layout-padding>
+        <div flex="50">
+            <lf-ng-md-file-input lf-files="files" lf-option="optoin"
+                                 lf-placeholder="Pick Image" lf-browse-label="Open Image"
+                                 lf-remove-label="Delete" drag preview ng-disabled="disabled" accept="image/*">
+            </lf-ng-md-file-input>
+        </div>
+        <div flex>
+            <pre>{{result}}</pre>
+        </div>
+    </div>
+
+    <div>
+        <canvas></canvas>
+    </div>
+
+    <md-button class="md-raised md-primary" ng-click="emotionifyImg.submit()">Submit</md-button>
+</div>
