@@ -33,7 +33,7 @@ let allowCrossDomain = function (req, res, next) {
 app.use(allowCrossDomain)
 
 
-app.use(express.static(path.join(__dirname, conf.CLIENT_PATH)));
+//app.use(express.static(path.join(__dirname, conf.CLIENT_PATH)));
 
 console.log(__dirname)
 
@@ -81,28 +81,55 @@ app.post('/emotionify_blob', rawParser, function (req, res) {
     })
 })
 
-io.on('connection', function (socket) {
-    socket.on('frame', function (data) {
-        // console.log(data.split(',')[1])
-        console.log(new Buffer(data.split(',')[1], 'base64'))
 
+/**
+ * Example of response from MS Emotion api
+ * ---------------------------------------
+ *
+ 200 [ { faceRectangle: { height: 137, left: 100, top: 79, width: 137 },
+ scores:
+ { anger: 0.0000544858121,
+ contempt: 0.004292106,
+ disgust: 0.000009244951,
+ fear: 0.00000439419364,
+ happiness: 0.00244169962,
+ neutral: 0.9925033,
+ sadness: 0.000192505817,
+ surprise: 0.0005022823 } } ]
+ */
+
+io.on('connection', function (socket) {
+    console.log('use connected')
+    console.log('use connected')
+    console.log('use connected')
+    console.log('use connected')
+
+    socket.on('frame', function (data) {
+        console.log(data.split(',')[1])
         let t0 = Date.now()
-        // request({
-        //     url: conf.MS_API_URL,
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/octet-stream',
-        //         'Ocp-Apim-Subscription-Key': conf.MS_API_KEY
-        //     },
-        //     body: new Buffer(data.split(',')[1], 'base64')
-        // }, function(error, response, body) {
-        //     if(error) {
-        //          console.log(error)
-        //     } else {
-        //          console.log(response.statusCode, body)
-        //     }
-        // })
+        request({
+            url: conf.MS_API_URL,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/octet-stream',
+                'Ocp-Apim-Subscription-Key': conf.MS_API_KEY
+            },
+            body: new Buffer(data.split(',')[1], 'base64')
+        }, function(error, response, body) {
+            if(error) {
+                 console.log(error)
+            } else {
+                console.log(JSON.parse(response.body)[0].scores)
+                socket.emit('oEmotionifiedFrame', JSON.parse(response.body)[0].scores)
+            }
+        })
+
+        // socket.emit('oEmotionifiedFrame', 'for testing')
     })
+   
+
+    //console.log(JSON.parse(body)[0].scores)
+    // socket.emit('oEmotionifiedFrame', 'for testing')
 })
     
 function timeDiff(t0) {
